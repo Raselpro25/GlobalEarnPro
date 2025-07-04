@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Referral Income - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(145deg, #1a1a1a, #2f2f2f);
+      color: #fff8e1;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #2c2c2c;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 40px;
+      color: gold;
+    }
+
+    h2 {
+      text-align: center;
+      color: gold;
+      margin: 10px 0 20px;
+    }
+
+    .summary {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 25px;
+    }
+
+    .referral-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .referral-item {
+      background: #3c3c3c;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-left: 5px solid gold;
+      border-radius: 10px;
+    }
+
+    .referral-item strong {
+      color: #fffacd;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #f1c40f;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #ddd;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🧑‍🤝‍🧑</div>
+    <h2>Referral Income</h2>
+
+    <div class="summary">
+      You have referred <strong><%= user.referrals ? user.referrals.length : 0 %></strong> users.
+    </div>
+
+    <% if (user.referrals && user.referrals.length > 0) { %>
+      <ul class="referral-list">
+        <% user.referrals.forEach(ref => { %>
+          <li class="referral-item">
+            <strong>User:</strong> <%= ref.username || 'Unknown' %><br>
+            <strong>Email:</strong> <%= ref.email %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p style="text-align:center;">No referral data found yet.</p>
+    <% } %>
+
+    <a href="/dashboard?email=<%= user.email %>" class="back-link">← Back to Dashboard</a>
+  </div>
+
+  <footer>
+    <a href="/contact">Contact</a> |
+    <a href="/terms">Terms</a> |
+    <a href="/privacy">Privacy</a>
+  </footer>
+</body>
+</html>

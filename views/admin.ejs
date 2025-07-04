@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #00e6e6;
+    }
+    .request {
+      background: #1e1e2f;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+    }
+    .request p {
+      margin: 5px 0;
+    }
+    .btn-group {
+      margin-top: 10px;
+    }
+    button {
+      padding: 8px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .approve-btn {
+      background-color: #28a745;
+      color: white;
+    }
+    .reject-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+    @media (max-width: 600px) {
+      .request {
+        padding: 10px;
+      }
+      button {
+        width: 100%;
+        margin-bottom: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🛠️ Admin Panel - Withdraw Requests</h1>
+
+  <% if (withdrawRequests.length === 0) { %>
+    <p style="text-align:center;">No pending requests.</p>
+  <% } %>
+
+  <% withdrawRequests.forEach(req => { %>
+    <div class="request">
+      <p><strong>Username:</strong> <%= req.username %></p>
+      <p><strong>Email:</strong> <%= req.email %></p>
+      <p><strong>Amount:</strong> <%= req.amount %></p>
+      <p><strong>Method:</strong> <%= req.method %></p>
+      <p><strong>Account:</strong> <%= req.account %></p>
+      <p><strong>Status:</strong> <%= req.status %></p>
+
+      <% if (req.status === 'Pending') { %>
+      <div class="btn-group">
+        <form action="/approve-request" method="POST" style="display:inline;">
+          <input type="hidden" name="email" value="<%= req.email %>">
+          <input type="hidden" name="amount" value="<%= req.amount %>">
+          <input type="hidden" name="method" value="<%= req.method %>">
+          <input type="hidden" name="account" value="<%= req.account %>">
+          <button class="approve-btn" type="submit">✅ Approve</button>
+        </form>
+        <form action="/reject-request" method="POST" style="display:inline;">
+          <input type="hidden" name="email" value="<%= req.email %>">
+          <input type="hidden" name="amount" value="<%= req.amount %>">
+          <input type="hidden" name="method" value="<%= req.method %>">
+          <input type="hidden" name="account" value="<%= req.account %>">
+          <button class="reject-btn" type="submit">❌ Reject</button>
+        </form>
+      </div>
+      <% } %>
+    </div>
+  <% }) %>
+</body>
+</html>

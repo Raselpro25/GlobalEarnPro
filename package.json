@@ -1,0 +1,30 @@
+{
+  "name": "reward-dashboard",
+  "version": "1.0.0",
+  "description": "A comprehensive reward dashboard with coins, XP, referrals, levels, and tasks",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.16.1",
+    "nodemailer": "^7.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "reward",
+    "dashboard",
+    "gamification",
+    "nodejs",
+    "express",
+    "ejs"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

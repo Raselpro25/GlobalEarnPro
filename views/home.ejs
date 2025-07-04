@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🌐 GlobalEarnPro - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f8f9fa, #e6f0ff);
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #004080;
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #ff99cc;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #004080;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #444;
+    }
+
+    .button-group {
+      margin-top: 30px;
+    }
+
+    .button-group a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 25px;
+      background-color: #ff3399;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(255, 51, 153, 0.5);
+      transition: all 0.3s ease-in-out;
+    }
+
+    .button-group a:hover {
+      background-color: #e60073;
+      box-shadow: 0 0 15px rgba(255, 51, 153, 0.8);
+    }
+
+    footer {
+      text-align: center;
+      background: #eee;
+      padding: 15px 0;
+      font-size: 14px;
+      color: #444;
+    }
+
+    /* Floating Coin/Dollar Animation */
+    .floating-coin {
+      position: absolute;
+      animation: float 6s infinite linear;
+      opacity: 0.4;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-100vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <header>🌐 GlobalEarnPro</header>
+
+  <main>
+    <h1>Welcome to GlobalEarnPro</h1>
+    <p>Earn coins by watching ads, completing tasks, inviting friends, and more!</p>
+
+    <div class="button-group">
+      <a href="/register">Earn Coins</a>
+      <a href="/login">Login</a>
+    </div>
+  </main>
+
+  <!-- How It Works Section -->
+  <section style="background:#fdfbff; padding:40px 20px; text-align:center;">
+    <h2 style="color:#004080;">How It Works</h2>
+    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin-top:30px;">
+      <div style="max-width:250px;">
+        <img src="https://cdn-icons-png.flaticon.com/128/10497/10497349.png" alt="ads" width="60" />
+        <h3>Watch Ads</h3>
+        <p>Earn coins by watching short ads daily.</p>
+      </div>
+      <div style="max-width:250px;">
+        <img src="https://cdn-icons-png.flaticon.com/128/2907/2907354.png" alt="invite" width="60" />
+        <h3>Invite Friends</h3>
+        <p>Get rewards when friends sign up through you!</p>
+      </div>
+      <div style="max-width:250px;">
+        <img src="https://cdn-icons-png.flaticon.com/128/891/891419.png" alt="withdraw" width="60" />
+        <h3>Withdraw</h3>
+        <p>Redeem your coins for real money anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section style="padding:40px 20px; background:#e6f0ff; text-align:center;">
+    <h2 style="color:#004080;">What Users Say</h2>
+    <div id="testimonialSlider" style="margin-top:30px; font-style:italic; font-size:16px; color:#333;"></div>
+  </section>
+
+  <footer>
+    &copy; <%= new Date().getFullYear() %> GlobalEarnPro |
+    <a href="/contact">Contact</a> |
+    <a href="/terms">Terms</a> |
+    <a href="/privacy">Privacy</a>
+    <a href="/faq">FAQ</a>
+  </footer>
+
+  <!-- Coin Animations -->
+  <img class="floating-coin" src="https://cdn-icons-png.flaticon.com/128/3135/3135715.png" style="left: 20%; top: 80%;" width="30"/>
+  <img class="floating-coin" src="https://cdn-icons-png.flaticon.com/128/1060/1060351.png" style="left: 60%; top: 90%;" width="25"/>
+
+  <!-- Testimonial Slider -->
+  <script>
+    const testimonials = [
+      "🌟 ‘I earned $15 just by watching ads for a week!’ — Anik",
+      "🔥 ‘Simple and fun way to earn some coins daily.’ — Rumi",
+      "💰 ‘GlobalEarnPro really pays! I got my bKash instantly.’ — Rashed"
+    ];
+    let index = 0;
+    function rotateTestimonial() {
+      document.getElementById("testimonialSlider").innerText = testimonials[index];
+      index = (index + 1) % testimonials.length;
+    }
+    setInterval(rotateTestimonial, 4000);
+    window.onload = rotateTestimonial;
+  </script>
+</body>
+</html>

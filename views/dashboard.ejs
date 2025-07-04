@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 24px;
+      color: #ff69b4;
+      text-shadow: 0 0 5px #ff69b4, 0 0 10px #7fffd4;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e1e2f;
+      border-radius: 12px;
+      padding: 20px;
+      min-width: 130px;
+      box-shadow: 0 0 10px #7fffd4;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #7fffd4;
+    }
+
+    .card p {
+      margin: 10px 0 0;
+      font-size: 22px;
+      font-weight: bold;
+      color: #ff69b4;
+    }
+
+    .progress-container {
+      width: 90%;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    .progress-bar {
+      background: #333;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 15px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #7fffd4, #ff69b4);
+      width: <%= xpProgress %>%;
+    }
+
+    .progress-text {
+      text-align: center;
+      margin-top: 5px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .buttons a {
+      background: linear-gradient(45deg, #ff69b4, #7fffd4);
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      color: #000;
+      box-shadow: 0 0 8px #7fffd4;
+      transition: 0.3s ease;
+    }
+
+    .buttons a:hover {
+      box-shadow: 0 0 20px #ff69b4;
+    }
+
+    .referral {
+      background: #1f1f2f;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      color: #fff;
+      box-shadow: 0 0 10px #7fffd4;
+    }
+
+    .referral h3 {
+      color: #7fffd4;
+    }
+
+    .referral code {
+      background: #333;
+      padding: 5px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 15px;
+      color: #ccc;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #7fffd4;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: 45%;
+        min-width: unset;
+      }
+
+      .buttons a {
+        width: 90%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🌐 Welcome, <%= user.username %></h1>
+  </header>
+
+  <div class="stats">
+    <div class="card">
+      <h2>Coins</h2>
+      <p><%= user.coins %></p>
+    </div>
+    <div class="card">
+      <h2>XP</h2>
+      <p><%= user.xp %></p>
+    </div>
+    <div class="card">
+      <h2>Referrals</h2>
+      <p><%= user.referrals.length %></p>
+    </div>
+    <div class="card">
+      <h2>Level</h2>
+      <p><%= level %></p>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <p class="progress-text"><%= xpProgress %>% to Next Level</p>
+  </div>
+
+  <div class="buttons">
+    <a href="/earn?email=<%= user.email %>">🎯 Earn Coins</a>
+    <a href="/withdraw?email=<%= user.email %>">💸 Withdraw</a>
+    <a href="/withdraw-history?email=<%= user.email %>">📜 Withdraw History</a>
+    <a href="/leaderboard?email=<%= user.email %>">🏆 Leaderboard</a>
+    <a href="/referral-income?email=<%= user.email %>">👥 Referral Earnings</a>
+    <a href="/edit-profile?email=<%= user.email %>" class="btn">✏️ Edit Profile</a>
+    <a href="/logout">🚪 Logout</a>
+  </div>
+
+  <div class="referral">
+    <h3>👥 Your Referral Code:</h3>
+    <code><%= user.username %></code>
+
+    <h3>🔗 Referral Link:</h3>
+    <code>http://yourdomain.com/register?ref=<%= user.username %></code>
+  </div>
+
+  <footer>
+    <a href="/contact">Contact</a> |
+    <a href="/terms">Terms</a> |
+    <a href="/privacy">Privacy</a>
+  </footer>
+
+</body>
+</html>

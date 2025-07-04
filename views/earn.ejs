@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Earn Coins - GlobalEarnPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+      padding: 25px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff69b4;
+      margin-bottom: 30px;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .earn-btn {
+      display: block;
+      padding: 15px;
+      background: linear-gradient(45deg, #1e90ff, #ff69b4);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+      transition: 0.3s ease;
+    }
+
+    .earn-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.8);
+    }
+
+    .back-btn {
+      display: block;
+      margin-top: 40px;
+      text-align: center;
+      color: #66fcf1;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      color: #ccc;
+    }
+
+    footer a {
+      margin: 0 10px;
+      color: #66fcf1;
+      text-decoration: none;
+    }
+
+    @media (max-width: 500px) {
+      .btn-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Earn Coins</h1>
+
+    <div class="btn-grid">
+      <a href="/earn/watch-ads?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Watch Ads</a>
+      <a href="/earn/install?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Install & Earn</a>
+      <a href="/earn/invite?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Invite & Earn</a>
+      <a href="/earn/link-visit?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Link Visit</a>
+      <a href="/earn/watch-videos?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Watch Videos</a>
+      <a href="/earn/daily-bonus?email=<%= encodeURIComponent(user.email) %>" class="earn-btn">Daily Bonus</a>
+    </div>
+
+    <a href="/dashboard?email=<%= encodeURIComponent(user.email) %>" class="back-btn">← Back to Dashboard</a>
+  </div>
+
+  <footer>
+    <a href="/contact">Contact</a> |
+    <a href="/terms">Terms</a> |
+    <a href="/privacy">Privacy</a>
+  </footer>
+</body>
+</html>

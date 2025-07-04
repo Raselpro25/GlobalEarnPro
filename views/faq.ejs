@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FAQs - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e6f0ff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #004080;
+      padding: 20px;
+      color: white;
+      text-align: center;
+      font-size: 24px;
+      text-shadow: 0 0 5px #ff99cc;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #004080;
+    }
+
+    .faq-item {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin: 15px 0;
+      padding: 20px;
+      cursor: pointer;
+    }
+
+    .faq-item h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #ff3399;
+    }
+
+    .faq-answer {
+      display: none;
+      padding-top: 10px;
+      color: #444;
+      font-size: 15px;
+    }
+
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      padding: 15px;
+      background: #eee;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>🌐 GlobalEarnPro FAQs</header>
+
+  <main>
+    <h1>Frequently Asked Questions</h1>
+
+    <div class="faq-item">
+      <h3>💰 How can I earn coins?</h3>
+      <div class="faq-answer">You can earn coins by watching ads, installing apps, inviting friends, completing daily login bonuses and more.</div>
+    </div>
+
+    <div class="faq-item">
+      <h3>📤 How can I withdraw my coins?</h3>
+      <div class="faq-answer">Go to the Withdraw page, select your payment method, enter details, and submit. Admin will review and approve within 24 hours.</div>
+    </div>
+
+    <div class="faq-item">
+      <h3>🎁 What is the referral program?</h3>
+      <div class="faq-answer">Invite friends using your referral code. When they earn coins, you also get bonus income.</div>
+    </div>
+
+    <div class="faq-item">
+      <h3>📆 How often can I get login bonus?</h3>
+      <div class="faq-answer">You get login bonus once every day when you visit your dashboard.</div>
+    </div>
+
+    <div class="faq-item">
+      <h3>⏱ How long does it take to get payment?</h3>
+      <div class="faq-answer">Payments are usually reviewed and sent within 24 hours. Check your Withdraw History for updates.</div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; <%= new Date().getFullYear() %> GlobalEarnPro | <a href="/contact">Contact</a> | <a href="/terms">Terms</a> | <a href="/privacy">Privacy</a>
+  </footer>
+
+  <script>
+    document.querySelectorAll(".faq-item").forEach(item => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

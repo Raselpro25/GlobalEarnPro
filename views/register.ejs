@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Register - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #000428, #004e92);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: white;
+    }
+
+    .register-box {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(255, 0, 255, 0.3);
+      width: 90%;
+      max-width: 460px;
+      text-align: center;
+    }
+
+    .register-box .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff00ff; }
+      to { text-shadow: 0 0 20px #00ffff; }
+    }
+
+    h2 {
+      color: #ff99ff;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 8px #ff99ff;
+    }
+
+    button {
+      background: linear-gradient(to right, #ff5edf, #04c8de);
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 15px;
+      box-shadow: 0 0 15px #ff00ff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      box-shadow: 0 0 25px #ff00ff, 0 0 30px #00eaff;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      display: block;
+      color: #99e0ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .login-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-box">
+    <div class="icon">📝</div>
+    <h2>Register on <b>GlobalEarnPro</b></h2>
+    <form action="/register" method="POST">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+      <select name="country" required>
+        <option value="">Select Country</option>
+        <option value="Bangladesh">Bangladesh</option>
+        <option value="India">India</option>
+        <option value="Italy">Italy</option>
+        <option value="USA">USA</option>
+        <option value="UK">UK</option>
+        <!-- Add more countries if needed -->
+      </select>
+      <input type="text" name="referralCode" placeholder="Referral Code (optional)" />
+      <button type="submit">Register</button>
+    </form>
+    <a class="login-link" href="/login">Already have an account? Login</a>
+  </div>
+</body>
+</html>

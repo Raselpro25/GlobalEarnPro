@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Withdraw Coins - GlobalEarnPro</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #111;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #66ffcc;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 15px;
+      border: none;
+      border-radius: 6px;
+      background: #333;
+      color: #fff;
+    }
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(to right, #66ffcc, #ff66cc);
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 8px;
+      color: black;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .submit-btn:hover {
+      opacity: 0.85;
+    }
+    .note {
+      text-align: center;
+      font-size: 14px;
+      color: #bbb;
+    }
+    .summary {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .footer a {
+      color: #66ffcc;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💸 Withdraw Coins</h1>
+    <form action="/withdraw" method="POST">
+      <label>Username:</label>
+      <input type="text" name="username" value="<%= user.username %>" readonly>
+
+      <label>Email:</label>
+      <input type="email" name="email" value="<%= user.email %>" readonly>
+
+      <label>Withdraw Amount (Coins):</label>
+      <input type="number" name="amount" id="amount" required>
+
+      <label>Withdraw Method:</label>
+      <select name="method" required>
+        <option value="">Select Method</option>
+        <option value="bkash">bKash</option>
+        <option value="nagad">Nagad</option>
+        <option value="bank">Bank Transfer</option>
+        <option value="paypal">PayPal</option>
+      </select>
+
+      <label>Account Number / Email:</label>
+      <input type="text" name="number" required>
+
+      <div class="summary" id="feesBox"></div>
+
+      <button type="submit" class="submit-btn">Submit Request</button>
+    </form>
+
+    <div class="note">⚠️ Minimum 10000 coins required. A 10% fee will be deducted.</div>
+    <div class="footer">
+      <a href="/dashboard?email=<%= user.email %>">← Back</a> |
+      <a href="/contact">Contact</a> |
+      <a href="/privacy">Privacy</a>
+    </div>
+  </div>
+
+  <script>
+    const amountInput = document.getElementById('amount');
+    const feesBox = document.getElementById('feesBox');
+
+    amountInput.addEventListener('input', () => {
+      const amount = parseFloat(amountInput.value);
+      if (!isNaN(amount)) {
+        const fee = Math.round(amount * 0.10); // 10% fee
+        const finalAmount = amount - fee;
+        feesBox.innerHTML = `💰 <strong>Fee:</strong> ${fee} coins | <strong>Final Amount:</strong> ${finalAmount} coins`;
+      } else {
+        feesBox.innerHTML = '';
+      }
+    });
+  </script>
+</body>
+</html>

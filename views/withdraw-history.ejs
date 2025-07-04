@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Withdraw History - GlobalEarnPro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(145deg, #1b1b2f, #3e1f47);
+      color: #f0eaff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #2e2e4f;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #d6a2e8;
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 40px;
+      color: #a29bfe;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 15px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #6c5ce7;
+    }
+
+    th {
+      background: #6c5ce7;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #3d3d5c;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 25px;
+      color: #a29bfe;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #bbb;
+      margin: 0 8px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📜</div>
+    <h2>Withdraw History</h2>
+
+    <% if (requests.length === 0) { %>
+      <p style="text-align:center;">No withdraw records found yet.</p>
+    <% } else { %>
+      <table>
+        <tr>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Account</th>
+          <th>Status</th>
+        </tr>
+        <% requests.forEach(r => { %>
+          <tr>
+            <td><%= r.amount %></td>
+            <td><%= r.method %></td>
+            <td><%= r.account %></td>
+            <td><%= r.status %></td>
+          </tr>
+        <% }) %>
+      </table>
+    <% } %>
+
+    <a href="/dashboard?email=<%= user.email %>" class="back-link">← Back to Dashboard</a>
+  </div>
+
+  <footer>
+    <a href="/contact">Contact</a> |
+    <a href="/terms">Terms</a> |
+    <a href="/privacy">Privacy</a>
+  </footer>
+</body>
+</html>

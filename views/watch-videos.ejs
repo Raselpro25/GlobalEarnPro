@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Watch Videos</title>
+</head>
+<body>
+  <h2>Watch & Earn</h2>
+  <p>(YouTube/video tasks will be here)</p>
+</body>
+</html>
+<a href="/earn?email=<%= encodeURIComponent(user.email) %>">← Back to Earn Page</a>
+
+<form action="/logout" method="POST" style="display:inline;">
+  <button type="submit" style="background:#dc3545; color:white; border:none; padding:8px 15px; border-radius:5px; margin-left:10px;">Logout</button>
+</form>
+<footer style="text-align:center; padding:20px; margin-top:40px; color:#666;">
+  <a href="/contact" style="margin:0 10px;">Contact</a> |
+  <a href="/terms">Terms</a> |
+  <a href="/privacy">Privacy</a>
+</footer>
