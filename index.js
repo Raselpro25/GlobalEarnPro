@@ -6,14 +6,25 @@ const User = require("./models/user");
 const WithdrawRequest = require("./models/WithdrawRequest");
 const Admin = require("./models/Admin");
 const sendMail = require("./mailer");
+require("dotenv").config(); // Load .env (for local dev only)
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// MongoDB Connection
-mongoose.connect("mongodb://localhost:27017/globalearnpro")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error("❌ MongoDB error:", err));
+// ✅ MongoDB Connection (Render-compatible)
+if (!process.env.MONGO_URI) {
+  console.error("❌ MONGO_URI is missing from environment");
+  process.exit(1);
+}
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Connected to MongoDB Atlas"))
+.catch((err) => {
+  console.error("❌ MongoDB error:", err.message);
+  process.exit(1);
+});
 
 // Middleware
 app.set("view engine", "ejs");
@@ -21,8 +32,13 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
-app.use(session({ secret: "yourSecret", resave: false, saveUninitialized: false }));
+app.use(session({
+  secret: process.env.SESSION_SECRET || "defaultSecret",
+  resave: false,
+  saveUninitialized: false,
+}));
 
+// Auth Middlewares
 function checkAuth(req, res, next) {
   if (!req.session.email) return res.redirect("/login");
   next();
@@ -37,7 +53,7 @@ app.get("/", (req, res) => res.redirect("/login"));
 app.get("/login", (req, res) => res.render("login"));
 app.get("/register", (req, res) => res.render("register"));
 app.get("/home", (req, res) => res.render("home"));
-app.get("/faq", (req, res) => res.render("faq")); // ✅ FAQ route added
+app.get("/faq", (req, res) => res.render("faq"));
 
 // Register
 app.post("/register", async (req, res) => {
@@ -48,7 +64,13 @@ app.post("/register", async (req, res) => {
     const newUser = new User({ username, email, password, country, referredBy: referralCode || null });
     await newUser.save();
     req.session.email = email;
-    await sendMail(email, "Welcome to GlobalEarnPro!", `<h2>Hello ${username},</h2><p>Your account has been created successfully.</p>`);
+
+    await sendMail(
+      email,
+      "Welcome to GlobalEarnPro!",
+      `<h2>Hello ${username},</h2><p>Your account has been created successfully.</p>`
+    );
+
     res.redirect("/dashboard");
   } catch {
     res.send("Registration failed");
@@ -90,7 +112,7 @@ app.get("/dashboard", checkAuth, async (req, res) => {
 
   const level = Math.floor(user.xp / 1000) + 1;
   const xpProgress = Math.round(((user.xp % 1000) / 1000) * 100);
-  const xpNeeded = (level * 1000) - user.xp;
+  const xpNeeded = level * 1000 - user.xp;
 
   res.render("dashboard", { user, level, xpProgress, xpNeeded });
 });
@@ -120,7 +142,14 @@ app.post("/withdraw", checkAuth, async (req, res) => {
     user.coins -= amount;
     await user.save();
 
-    const request = new WithdrawRequest({ username, email: user.email, amount, method, account: number, status: "Pending" });
+    const request = new WithdrawRequest({
+      username,
+      email: user.email,
+      amount,
+      method,
+      account: number,
+      status: "Pending",
+    });
     await request.save();
     res.redirect("/dashboard");
   } catch {
@@ -170,7 +199,7 @@ app.post("/edit-profile", checkAuth, async (req, res) => {
   }
 });
 
-// Admin Login + Panel
+// Admin Panel
 app.get("/admin-login", (req, res) => res.render("admin-login"));
 app.post("/admin-login", async (req, res) => {
   const { username, password } = req.body;
@@ -193,7 +222,7 @@ app.post("/approve-request", checkAdmin, async (req, res) => {
     if (!request) return res.json({ success: false });
     request.status = "Approved";
     await request.save();
-    await sendMail(email, "Withdrawal Approved", `<p>Your withdrawal request of ${amount} via ${method} has been <b>approved</b>.</p>`);
+    await sendMail(email, "Withdrawal Approved", `<p>Your withdrawal of ${amount} via ${method} has been <b>approved</b>.</p>`);
     res.json({ success: true });
   } catch {
     res.json({ success: false });
@@ -206,7 +235,7 @@ app.post("/reject-request", checkAdmin, async (req, res) => {
     if (!request) return res.json({ success: false });
     request.status = "Rejected";
     await request.save();
-    await sendMail(email, "Withdrawal Rejected", `<p>Your withdrawal request of ${amount} via ${method} has been <b>rejected</b>. Please contact support for more info.</p>`);
+    await sendMail(email, "Withdrawal Rejected", `<p>Your withdrawal of ${amount} via ${method} has been <b>rejected</b>. Please contact support.</p>`);
     res.json({ success: true });
   } catch {
     res.json({ success: false });
