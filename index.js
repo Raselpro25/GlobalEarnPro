@@ -6,7 +6,6 @@ const User = require("./models/user");
 const WithdrawRequest = require("./models/WithdrawRequest");
 const Admin = require("./models/Admin");
 const sendMail = require("./mailer");
-require("dotenv").config(); // Load .env (for local dev only)
 
 const app = express();
 const PORT = process.env.PORT || 3000;
