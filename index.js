@@ -1,3 +1,4 @@
+require("dotenv").config(); // Load .env
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -10,22 +11,18 @@ const sendMail = require("./mailer");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ MongoDB Connection (Render-compatible)
-if (!process.env.MONGO_URI) {
-  console.error("❌ MONGO_URI is missing from environment");
-  process.exit(1);
-}
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => console.log("✅ Connected to MongoDB Atlas"))
 .catch((err) => {
-  console.error("❌ MongoDB error:", err.message);
+  console.error("❌ MongoDB connection error:", err.message);
   process.exit(1);
 });
 
-// Middleware
+// Middleware Setup
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -37,15 +34,15 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-// Auth Middlewares
-function checkAuth(req, res, next) {
+// Auth Middleware
+const checkAuth = (req, res, next) => {
   if (!req.session.email) return res.redirect("/login");
   next();
-}
-function checkAdmin(req, res, next) {
+};
+const checkAdmin = (req, res, next) => {
   if (!req.session.admin) return res.redirect("/admin-login");
   next();
-}
+};
 
 // Public Routes
 app.get("/", (req, res) => res.redirect("/login"));
@@ -58,18 +55,11 @@ app.get("/faq", (req, res) => res.render("faq"));
 app.post("/register", async (req, res) => {
   const { username, email, password, country, referralCode } = req.body;
   try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.send("Email already exists");
+    if (await User.findOne({ email })) return res.send("Email already exists");
     const newUser = new User({ username, email, password, country, referredBy: referralCode || null });
     await newUser.save();
     req.session.email = email;
-
-    await sendMail(
-      email,
-      "Welcome to GlobalEarnPro!",
-      `<h2>Hello ${username},</h2><p>Your account has been created successfully.</p>`
-    );
-
+    await sendMail(email, "Welcome to GlobalEarnPro!", `<h2>Hello ${username},</h2><p>Your account has been created successfully.</p>`);
     res.redirect("/dashboard");
   } catch {
     res.send("Registration failed");
@@ -122,10 +112,11 @@ app.get("/earn", checkAuth, async (req, res) => {
   res.render("earn", { user });
 });
 app.get("/earn/:type", checkAuth, async (req, res) => {
-  const user = await User.findOne({ email: req.session.email });
   const validTypes = ["watch-ads", "install", "invite", "link-visit", "watch-videos", "daily-bonus"];
-  if (!validTypes.includes(req.params.type)) return res.send("Invalid Type");
-  res.render(req.params.type, { user });
+  const type = req.params.type;
+  if (!validTypes.includes(type)) return res.send("Invalid Type");
+  const user = await User.findOne({ email: req.session.email });
+  res.render(type, { user });
 });
 
 // Withdraw
@@ -135,25 +126,21 @@ app.get("/withdraw", checkAuth, async (req, res) => {
 });
 app.post("/withdraw", checkAuth, async (req, res) => {
   const { username, amount, method, number } = req.body;
-  try {
-    const user = await User.findOne({ email: req.session.email });
-    if (!user || user.coins < amount) return res.send("Not enough coins.");
-    user.coins -= amount;
-    await user.save();
+  const user = await User.findOne({ email: req.session.email });
+  if (!user || user.coins < amount) return res.send("Not enough coins.");
+  user.coins -= amount;
+  await user.save();
 
-    const request = new WithdrawRequest({
-      username,
-      email: user.email,
-      amount,
-      method,
-      account: number,
-      status: "Pending",
-    });
-    await request.save();
-    res.redirect("/dashboard");
-  } catch {
-    res.send("Withdraw error");
-  }
+  await new WithdrawRequest({
+    username,
+    email: user.email,
+    amount,
+    method,
+    account: number,
+    status: "Pending",
+  }).save();
+
+  res.redirect("/dashboard");
 });
 
 // Withdraw History
@@ -183,19 +170,15 @@ app.get("/edit-profile", checkAuth, async (req, res) => {
 });
 app.post("/edit-profile", checkAuth, async (req, res) => {
   const { username, country, newPassword, confirmPassword } = req.body;
-  try {
-    const user = await User.findOne({ email: req.session.email });
-    user.username = username;
-    user.country = country;
-    if (newPassword) {
-      if (newPassword !== confirmPassword) return res.send("Passwords do not match.");
-      user.password = newPassword;
-    }
-    await user.save();
-    res.redirect("/dashboard");
-  } catch {
-    res.send("Profile update failed");
+  const user = await User.findOne({ email: req.session.email });
+  user.username = username;
+  user.country = country;
+  if (newPassword) {
+    if (newPassword !== confirmPassword) return res.send("Passwords do not match.");
+    user.password = newPassword;
   }
+  await user.save();
+  res.redirect("/dashboard");
 });
 
 // Admin Panel
@@ -216,29 +199,21 @@ app.get("/admin", checkAdmin, async (req, res) => {
 });
 app.post("/approve-request", checkAdmin, async (req, res) => {
   const { email, amount, method, account } = req.body;
-  try {
-    const request = await WithdrawRequest.findOne({ email, amount, method, account, status: "Pending" });
-    if (!request) return res.json({ success: false });
-    request.status = "Approved";
-    await request.save();
-    await sendMail(email, "Withdrawal Approved", `<p>Your withdrawal of ${amount} via ${method} has been <b>approved</b>.</p>`);
-    res.json({ success: true });
-  } catch {
-    res.json({ success: false });
-  }
+  const request = await WithdrawRequest.findOne({ email, amount, method, account, status: "Pending" });
+  if (!request) return res.json({ success: false });
+  request.status = "Approved";
+  await request.save();
+  await sendMail(email, "Withdrawal Approved", `<p>Your withdrawal of ${amount} via ${method} has been <b>approved</b>.</p>`);
+  res.json({ success: true });
 });
 app.post("/reject-request", checkAdmin, async (req, res) => {
   const { email, amount, method, account } = req.body;
-  try {
-    const request = await WithdrawRequest.findOne({ email, amount, method, account, status: "Pending" });
-    if (!request) return res.json({ success: false });
-    request.status = "Rejected";
-    await request.save();
-    await sendMail(email, "Withdrawal Rejected", `<p>Your withdrawal of ${amount} via ${method} has been <b>rejected</b>. Please contact support.</p>`);
-    res.json({ success: true });
-  } catch {
-    res.json({ success: false });
-  }
+  const request = await WithdrawRequest.findOne({ email, amount, method, account, status: "Pending" });
+  if (!request) return res.json({ success: false });
+  request.status = "Rejected";
+  await request.save();
+  await sendMail(email, "Withdrawal Rejected", `<p>Your withdrawal of ${amount} via ${method} has been <b>rejected</b>. Please contact support.</p>`);
+  res.json({ success: true });
 });
 
 // Policies
